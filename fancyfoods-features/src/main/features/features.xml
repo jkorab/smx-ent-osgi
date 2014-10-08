@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.0.0"
+    name="${project.artifactId}-${project.version}">
+    <feature name="ff-jpa">
+        <feature version="${openjpa.range}">openjpa</feature> <!-- this pulls in the jpa feature -->
+        <feature>transaction</feature>
+        <feature>jndi</feature>
+    </feature>
+    <feature name="ff-api">
+        <bundle>mvn:com.ameliant.examples/fancyfoods-api/1.0-SNAPSHOT</bundle>
+    </feature>
+    <feature name="ff-persistence">
+        <feature>ff-jpa</feature>
+        <feature>ff-api</feature>
+        <!-- marking a bundle as a dependency will mean that it does not get loaded into the kar file -->
+        <bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.derby/${derby.version}</bundle>
+        <bundle>mvn:com.ameliant.examples/fancyfoods-datasource/1.0-SNAPSHOT</bundle>
+        <bundle>mvn:com.ameliant.examples/fancyfoods-persistence/1.0-SNAPSHOT</bundle>
+    </feature>
+    <feature name="ff-business">
+        <feature>ff-persistence</feature>
+        <bundle>mvn:com.ameliant.examples/fancyfoods-dept-cheese/1.0-SNAPSHOT</bundle>
+        <bundle>mvn:com.ameliant.examples/fancyfoods-dept-chocolate/1.0-SNAPSHOT</bundle>
+        <bundle>mvn:com.ameliant.examples/fancyfoods-business/1.0-SNAPSHOT</bundle>
+    </feature>
+    <feature name="ff-web">
+        <feature>ff-business</feature>
+        <feature>blueprint-web</feature>
+        <bundle>mvn:com.ameliant.examples/fancyfoods-web-nls-fr/1.0-SNAPSHOT</bundle>
+        <bundle>mvn:com.ameliant.examples/fancyfoods-web/1.0-SNAPSHOT/war</bundle>
+    </feature>
+</features>

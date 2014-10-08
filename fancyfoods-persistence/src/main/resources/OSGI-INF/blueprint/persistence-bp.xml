@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+           xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0">
+
+    <bean id="inventory" class="fancyfoods.persistence.impl.InventoryImpl">
+        <tx:transaction method="*" value="Required"/>
+        <jpa:context property="entityManager" unitname="fancyfoods"/>
+    </bean>
+
+    <!--
+    For application-managed persistence, an EntityManagerFactory can be injected
+    instead using the following line:
+
+    <jpa:unit property="entityManagerFactory" unitName="fancyfoods"/>
+
+    See http://aries.apache.org/modules/jpaproject.html for more details.
+    -->
+
+    <bean id="populater" class="fancyfoods.persistence.InventoryPopulater"
+            init-method="populate"
+            activation="eager">
+        <property name="inventory" ref="inventory"/>
+    </bean>
+
+    <service ref="inventory" interface="fancyfoods.food.Inventory"/>
+
+</blueprint>

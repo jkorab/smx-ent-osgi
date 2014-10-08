@@ -1,0 +1,1 @@
+This project contains a ServiceMix 5.1 specific implementation of the Fancy Foods example from Enterprise OSGi in Action by Holly Cummins and Timothy Ward, with additional goodness.
